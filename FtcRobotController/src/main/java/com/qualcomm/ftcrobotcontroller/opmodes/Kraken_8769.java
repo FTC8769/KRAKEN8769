@@ -157,23 +157,39 @@ public class Kraken_8769 extends OpMode {
         // and 1 is full right
         float throttle = (float)scaleThrottle(-gamepad1.left_stick_y, gamepad1.right_stick_y);
         float direction = (float)scaleThrottle(gamepad1.left_stick_x, gamepad1.right_stick_y);
-        float right = throttle - direction;
-        float left = throttle + direction;
+        float rightFront = throttle - direction;
+        float rightRear = throttle - direction;
+        float leftFront = throttle + direction;
+        float leftRear = throttle + direction;
+
 
         // clip the right/left values so that the values never exceed +/- 1
-        right = Range.clip(right, -1, 1);
-        left = Range.clip(left, -1, 1);
-
-        // scale the joystick value to make it easier to control
-        // the robot more precisely at slower speeds.
-        //right = (float)scaleInput(right);
-        //left =  (float)scaleInput(left);
+        rightFront = Range.clip(rightFront, -1, 1);
+        rightRear = Range.clip(rightRear, -1, 1);
+        leftFront = Range.clip(leftFront, -1, 1);
+        leftRear = Range.clip(leftRear, -1, 1);
 
         // write the values to the motors
-        motorRF.setPower(right);
-        motorLF.setPower(left);
-        motorRB.setPower(right);
-        motorLB.setPower(left);
+        if (gamepad1.right_bumper)
+        {
+            rightRear = (float)(rightRear * .25);
+            rightRear = (float)(leftRear * .25);
+        }
+        else if (gamepad1.left_bumper) {
+            rightFront = (float)(rightFront * .25);
+            leftFront = (float)(leftFront * .25);
+        }
+
+        motorRF.setPower(rightFront);
+        motorRB.setPower(rightRear);
+        motorLF.setPower(leftFront);
+        motorLB.setPower(leftRear);
+
+        if (gamepad1.right_trigger != 0 && sweeper >= -1 && sweeper <= 1)
+            sweeper = sweeper + 1;
+
+        if (gamepad1.left_trigger != 0 && sweeper <= 1 && sweeper >= -1)
+            sweeper = sweeper - 1;
 
         if (gamepad2.left_bumper && liftUD >= -1 && liftUD <= 1)
             liftUD = liftUD + 1;
@@ -181,11 +197,6 @@ public class Kraken_8769 extends OpMode {
         if (gamepad2.right_bumper && liftUD <= 1 && liftUD >= -1)
             liftUD = liftUD - 1;
 
-        if (gamepad1.left_bumper && sweeper >= -1 && sweeper <= 1)
-            sweeper = sweeper + 1;
-
-        if (gamepad1.right_bumper && sweeper <= 1 && sweeper >= -1)
-            sweeper = sweeper - 1;
 
         Sweeper(sweeper);
        // LiftAuto(liftUD);
@@ -199,8 +210,12 @@ public class Kraken_8769 extends OpMode {
 
 
         telemetry.addData("text", "Kraken 8769");
-        telemetry.addData("left tgt pwr",  "left  pwr: " + String.format("%.2f", left));
-        telemetry.addData("right tgt pwr", "right pwr: " + String.format("%.2f", right));
+
+        telemetry.addData("text",  "LF: " + String.format("%.2f", leftFront));
+        telemetry.addData("text", "RF: " + String.format("%.2f", rightFront));
+        telemetry.addData("text",  "LR: " + String.format("%.2f", leftRear));
+        telemetry.addData("text", "RR: " + String.format("%.2f", rightRear));
+
         if (sweeper == 0)
             telemetry.addData("text", "Sweeper: Stopped");
         else if (sweeper > 0)
