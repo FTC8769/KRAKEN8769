@@ -175,6 +175,7 @@ public class FtcRobotControllerActivity extends Activity {
 
     if (USE_DEVICE_EMULATION) { HardwareFactory.enableDeviceEmulation(); }
   }
+// test  commit
 
   @Override
   protected void onStart() {
