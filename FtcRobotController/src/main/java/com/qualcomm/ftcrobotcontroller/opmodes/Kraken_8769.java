@@ -196,7 +196,8 @@ public class Kraken_8769 extends OpMode {
 
         if (gamepad2.right_bumper && liftUD <= 1 && liftUD >= -1)
             liftUD = liftUD - 1;
-
+        sweeper = 0;  // fix/hack for out of range error - since we're not using it now and it's breaking things
+        liftUD=0;  // fix/hack for out of range error - since we're not using it now and it's breaking things
 
         Sweeper(sweeper);
        // LiftAuto(liftUD);
@@ -278,7 +279,7 @@ public class Kraken_8769 extends OpMode {
         double dReturnVal = 0.0;
         double dInputScale = 0.0;
 
-        dInputScale = ( (dStick2 + 1) /2 ) + .1;  // set the range from (-1 to +1 ) to be (.1 to 1.1) even though > 1 is invalid
+        dInputScale = Math.max( ( ( (dStick2 + 1) /2 ) + .1 ), 1.0 );  // set the range from (-1 to +1 ) to be (.1 to 1.1) even though > 1 is invalid
         dReturnVal = dStick1 * dInputScale;
 
         return dReturnVal;
