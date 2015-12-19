@@ -285,6 +285,22 @@ public class Kraken_8769 extends OpMode {
     }
 
     /*
+    * This method calculates the exponential value for the stick input
+     * such that
+     * half stick = 0.50 * 0.50 = 0.25  // half stick = quarter forward
+      * quater stick = 0.25 * 0.25 = 0.064 // quarter stick = less than 7 percent forward
+      * 3/4 stick = 0.75 * 0.75 = 0.5625 // 3/4 stick == about half throttle
+      * full stick = 1 * 1 = 1  // full forward equals full forward
+     *
+    */
+    double getExponential(double dStick1, double dStick2)
+    {
+        double dReturnVal = 0.0;
+        dReturnVal = dStick1 * Math.abs( dStick1 );
+        return dReturnVal;
+    }
+
+    /*
      * This method scales the joystick input so for low joystick values, the
      * scaled value is less than linear.  This is to make it easier to drive
      * the robot more precisely at slower speeds.
