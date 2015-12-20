@@ -105,4 +105,67 @@ public class Kraken_8769_Autonomous_Base extends LinearOpMode {
     {
         motorSweeper.setPower(direction);
     }
+
+    public void Drive(int inches)
+    {
+        long time = inches * 1000;
+        motorLF.setPower(.25);
+        motorLB.setPower(.25);
+        motorRB.setPower(.25);
+        motorRF.setPower(.25);
+        try {
+            Thread.sleep(time);
+        }
+        catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        stopMotors();
+    }
+
+    public void TurnRight(float degrees)
+    {
+        long time = (long)degrees * 1000;
+        motorRB.setPower(.1);
+        motorRF.setPower(.1);
+        motorLF.setPower(-.1);
+        motorLB.setPower(-.1);
+        try {
+            Thread.sleep(time);
+        }
+        catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        stopMotors();
+    }
+    public void TurnLeft(float degrees)
+    {
+        long time = (long)degrees * 1000;
+        motorRB.setPower(-.1);
+        motorRF.setPower(-.1);
+        motorLF.setPower(.1);
+        motorLB.setPower(.1);
+        try {
+            Thread.sleep(time);
+        }
+        catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        stopMotors();
+    }
+
+    public void Climb(int inches)
+    {
+
+    }
+
+    public void stopMotors()
+    {
+        motorLF.setPower(0);
+        motorLB.setPower(0);
+        motorRB.setPower(0);
+        motorRF.setPower(0);
+    }
+
 }
