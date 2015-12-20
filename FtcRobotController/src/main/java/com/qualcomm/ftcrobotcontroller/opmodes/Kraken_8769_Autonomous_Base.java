@@ -106,7 +106,7 @@ public class Kraken_8769_Autonomous_Base extends LinearOpMode {
         motorSweeper.setPower(direction);
     }
 
-    public void Drive(int inches)
+    public void DriveForward(int inches)
     {
         long time = inches * 1000;
         motorLF.setPower(.25);
@@ -121,6 +121,23 @@ public class Kraken_8769_Autonomous_Base extends LinearOpMode {
         }
         stopMotors();
     }
+
+    public void DriveBackwards(int inches)
+    {
+        long time = inches * 1000;
+        motorLF.setPower(-.25);
+        motorLB.setPower(-.25);
+        motorRB.setPower(-.25);
+        motorRF.setPower(-.25);
+        try {
+            Thread.sleep(time);
+        }
+        catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        stopMotors();
+    }
+
 
     public void TurnRight(float degrees)
     {
