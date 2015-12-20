@@ -34,8 +34,6 @@ package com.qualcomm.ftcrobotcontroller.opmodes;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorController;
-import com.qualcomm.robotcore.hardware.Servo;
-import com.qualcomm.robotcore.hardware.TouchSensor;
 import com.qualcomm.robotcore.util.Range;
 
 /**
@@ -52,10 +50,10 @@ public class Kraken_8769 extends OpMode {
      */
     // TETRIX VALUES.
 
-    static String MOTORLF = "motorLF";
-    static String MOTORLB = "motorLB";
-    static String MOTORRF = "motorRF";
-    static String MOTORRB = "motorRB";
+    static String MOTORLF = "mlf"; //Motor left front
+    static String MOTORLB = "mlr"; //Motor left rear
+    static String MOTORRF = "mrf"; //Motor right front
+    static String MOTORRB = "mrr"; //Motor right rear
 
 
     static String MOTORTILT = "liftT";
@@ -64,8 +62,8 @@ public class Kraken_8769 extends OpMode {
     static String CONTROLLIFT = "controlUD";
 
 
-    static String MOTORSWEEPER = "sweep";
-    static String MOTORCONVEYOR = "conveyor";
+    static String MOTORSWEEPER = "swx";  //Motor front sweeper
+    static String MOTORCONVEYOR = "swy";  //Motor side sweeper
 
     final static double LIFT_MIN_RANGE  = 0.20;
     final static double LIFT_MAX_RANGE  = 0.90;
@@ -185,22 +183,15 @@ public class Kraken_8769 extends OpMode {
         motorLF.setPower(leftFront);
         motorLB.setPower(leftRear);
 
-        if (gamepad1.right_trigger != 0 && sweeper >= -1 && sweeper <= 1)
+        if (gamepad2.right_bumper && (sweeper >= -1 && sweeper < 1))
             sweeper = sweeper + 1;
 
-        if (gamepad1.left_trigger != 0 && sweeper <= 1 && sweeper >= -1)
+        if (gamepad2.left_bumper && (sweeper <= 1 && sweeper > -1))
             sweeper = sweeper - 1;
 
-        if (gamepad2.left_bumper && liftUD >= -1 && liftUD <= 1)
-            liftUD = liftUD + 1;
-
-        if (gamepad2.right_bumper && liftUD <= 1 && liftUD >= -1)
-            liftUD = liftUD - 1;
-        sweeper = 0;  // fix/hack for out of range error - since we're not using it now and it's breaking things
         liftUD=0;  // fix/hack for out of range error - since we're not using it now and it's breaking things
 
         Sweeper(sweeper);
-       // LiftAuto(liftUD);
 
 		/*
 		 * Send telemetry data back to driver station. Note that if we are using
@@ -279,7 +270,10 @@ public class Kraken_8769 extends OpMode {
         double dReturnVal = 0.0;
         double dInputScale = 0.0;
 
-        dInputScale = Math.max( ( ( (dStick2 + 1) /2 ) + .1 ), 1.0 );  // set the range from (-1 to +1 ) to be (.1 to 1.1) even though > 1 is invalid
+        dInputScale = (dStick2 + 1) / 2;
+
+        if (dInputScale == 0) dInputScale = 0.1;
+
         dReturnVal = dStick1 * dInputScale;
 
         return dReturnVal;
