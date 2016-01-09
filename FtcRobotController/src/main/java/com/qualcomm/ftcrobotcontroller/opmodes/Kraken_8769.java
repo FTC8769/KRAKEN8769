@@ -56,19 +56,13 @@ public class Kraken_8769 extends OpMode {
     static String MOTORRB = "mrr"; //Motor right rear
 
 
-    static String MOTORTILT = "liftT";
-    static String MOTORUPDOWN = "liftUD";
-    static String CONTROLTILT = "controlT";
-    static String CONTROLLIFT = "controlUD";
-
+    static String MOTORARM = "arm";
+    static String MOTORTAPE = "tape";
 
     static String MOTORSWEEPER = "swx";  //Motor front sweeper
     static String MOTORCONVEYOR = "swy";  //Motor side sweeper
 
-    final static double LIFT_MIN_RANGE  = 0.20;
-    final static double LIFT_MAX_RANGE  = 0.90;
-    final static double LIFT_PIVOT_MIN_RANGE  = -0.45;
-    final static double LIFT_PIVOT_MAX_RANGE  = 0.45;
+    static String CONTROLARM = "carm";  //Motor side sweeper
 
     DcMotor motorRF;
     DcMotor motorRB;
@@ -76,14 +70,22 @@ public class Kraken_8769 extends OpMode {
     DcMotor motorLF;
     DcMotor motorLB;
 
-    DcMotor motorLiftTilt;
-    DcMotor motorLiftUpDown;
+    DcMotor motorArm;
+    DcMotor motorTape;
     DcMotor motorSweeper;
     DcMotor motorConveyor;
-    DcMotorController controlLift;
+    DcMotorController controlArm;
 
+
+    float conveyor = 0;
     float sweeper = 0;
     float liftUD = 0;
+
+    float armMin = 0;
+    float armMax = 0;
+
+    float tapeMin = 0;
+    float tapeMax = 0;
 
     /**
      * Constructor
@@ -121,13 +123,15 @@ public class Kraken_8769 extends OpMode {
         motorLB = hardwareMap.dcMotor.get(MOTORLB);
         motorRF = hardwareMap.dcMotor.get(MOTORRF);
         motorRB = hardwareMap.dcMotor.get(MOTORRB);
-//        motorConveyor = hardwareMap.dcMotor.get(MOTORCONVEYOR);
-//        motorLiftTilt = hardwareMap.dcMotor.get(MOTORTILT);
-//        motorLiftUpDown = hardwareMap.dcMotor.get(MOTORUPDOWN);
-        motorSweeper = hardwareMap.dcMotor.get(MOTORSWEEPER);
 
-        //controlLift = hardwareMap.dcMotorController.get(CONTROLLIFT);
-        //setDriveMode(DcMotorController.RunMode.RUN_TO_POSITION);
+        motorArm = hardwareMap.dcMotor.get(MOTORARM);
+        motorTape = hardwareMap.dcMotor.get(MOTORTAPE);
+
+        motorSweeper = hardwareMap.dcMotor.get(MOTORSWEEPER);
+        motorConveyor = hardwareMap.dcMotor.get(MOTORCONVEYOR);
+
+        controlArm = hardwareMap.dcMotorController.get(CONTROLARM);
+//        setDriveMode(DcMotorController.RunMode.RUN_TO_POSITION);
 
 
         motorLF.setDirection(DcMotor.Direction.REVERSE);
@@ -189,9 +193,17 @@ public class Kraken_8769 extends OpMode {
         if (gamepad2.left_bumper && (sweeper <= 1 && sweeper > -1))
             sweeper = sweeper - 1;
 
-        liftUD=0;  // fix/hack for out of range error - since we're not using it now and it's breaking things
-
         Sweeper(sweeper);
+
+
+        if (gamepad2.dpad_left && (conveyor >= -.5 && conveyor < .5))
+            conveyor = conveyor + (float).5;
+
+        if (gamepad2.dpad_right && (conveyor <= .5 && conveyor > -.5))
+            conveyor = conveyor - (float).5;
+
+
+        Conveyor(sweeper);
 
 		/*
 		 * Send telemetry data back to driver station. Note that if we are using
@@ -202,6 +214,9 @@ public class Kraken_8769 extends OpMode {
 
 
         telemetry.addData("text", "Kraken 8769");
+
+        telemetry.addData("ARM", motorArm.getCurrentPosition());
+        telemetry.addData("TAPE", motorTape.getCurrentPosition());
 
         telemetry.addData("text",  "LF: " + String.format("%.2f", leftFront));
         telemetry.addData("text", "RF: " + String.format("%.2f", rightFront));
@@ -217,22 +232,18 @@ public class Kraken_8769 extends OpMode {
 
     }
 
-    public void Lift(float stick)
+    public void Arm(float stick)
     {
-
+        if (motorTape.getChannelMode() != DcMotorController.RunMode.RUN_USING_ENCODERS) {
+            motorTape.setChannelMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
+        }
         //write movement code under this line
     }
 
-    public void LiftTilt(float stick)
+    public void Tape(float direction)
     {
-
-        //write movement code under this line
-    }
-
-    public void LiftAuto(float direction)
-    {
-        if (motorLiftUpDown.getChannelMode() != DcMotorController.RunMode.RUN_USING_ENCODERS) {
-            motorLiftUpDown.setChannelMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
+        if (motorTape.getChannelMode() != DcMotorController.RunMode.RUN_USING_ENCODERS) {
+            motorTape.setChannelMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
         }
         //int pos = controlLift.setMotorTargetPosition();
         //write movement code under this line
@@ -241,6 +252,11 @@ public class Kraken_8769 extends OpMode {
     public void Sweeper(float direction)
     {
         motorSweeper.setPower(direction);
+    }
+
+    public void Conveyor(float direction)
+    {
+        motorConveyor.setPower(direction);
     }
 
     /*
@@ -254,13 +270,15 @@ public class Kraken_8769 extends OpMode {
     }
 
 
+
+
     public void setDriveMode(DcMotorController.RunMode mode) {
-        if (motorLiftTilt.getChannelMode() != mode) {
-            motorLiftTilt.setChannelMode(mode);
+        if (motorArm.getChannelMode() != mode) {
+            motorArm.setChannelMode(mode);
         }
 
-        if (motorLiftUpDown.getChannelMode() != mode) {
-            motorLiftUpDown.setChannelMode(mode);
+        if (motorArm.getChannelMode() != mode) {
+            motorArm.setChannelMode(mode);
         }
     }
 
