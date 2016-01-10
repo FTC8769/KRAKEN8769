@@ -230,6 +230,14 @@ public class Kraken_8769 extends OpMode {
         else
             telemetry.addData("text", "Sweeper: Reverse");
 
+
+        if (conveyor == 0)
+            telemetry.addData("Conveyor", "Stopped");
+        else if (conveyor > 0)
+            telemetry.addData("Conveyor", "Left");
+        else
+            telemetry.addData("Conveyor", "Right");
+
     }
 
     public void Arm(float stick)
