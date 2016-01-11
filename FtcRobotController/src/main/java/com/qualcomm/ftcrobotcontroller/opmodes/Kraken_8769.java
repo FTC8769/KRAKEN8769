@@ -124,14 +124,15 @@ public class Kraken_8769 extends OpMode {
         motorRF = hardwareMap.dcMotor.get(MOTORRF);
         motorRB = hardwareMap.dcMotor.get(MOTORRB);
 
-        motorArm = hardwareMap.dcMotor.get(MOTORARM);
-        motorTape = hardwareMap.dcMotor.get(MOTORTAPE);
-
+        //motorTape = hardwareMap.dcMotor.get(MOTORTAPE);
         motorSweeper = hardwareMap.dcMotor.get(MOTORSWEEPER);
         motorConveyor = hardwareMap.dcMotor.get(MOTORCONVEYOR);
 
         controlArm = hardwareMap.dcMotorController.get(CONTROLARM);
-//        setDriveMode(DcMotorController.RunMode.RUN_TO_POSITION);
+        motorArm = hardwareMap.dcMotor.get(MOTORARM);
+
+       // motorArm.setChannelMode( DcMotorController.RunMode.RESET_ENCODERS);
+        setDriveMode(DcMotorController.RunMode.RUN_WITHOUT_ENCODERS);
 
 
         motorLF.setDirection(DcMotor.Direction.REVERSE);
@@ -160,19 +161,21 @@ public class Kraken_8769 extends OpMode {
         float throttle = (float)scaleThrottle(-gamepad1.left_stick_y, gamepad1.right_stick_y);
         float direction = (float)scaleThrottle(gamepad1.left_stick_x, gamepad1.right_stick_y);
         float rightFront = throttle - direction;
-        float rightRear = throttle - direction;
+        //float rightRear = throttle - direction;
         float leftFront = throttle + direction;
-        float leftRear = throttle + direction;
+        //float leftRear = throttle + direction;
 
+
+        float armSpeed = gamepad2.left_stick_y * (float).1;
 
         // clip the right/left values so that the values never exceed +/- 1
         rightFront = Range.clip(rightFront, -1, 1);
-        rightRear = Range.clip(rightRear, -1, 1);
+        //rightRear = Range.clip(rightRear, -1, 1);
         leftFront = Range.clip(leftFront, -1, 1);
-        leftRear = Range.clip(leftRear, -1, 1);
+        //leftRear = Range.clip(leftRear, -1, 1);
 
         // write the values to the motors
-        if (gamepad1.right_bumper)
+/*        if (gamepad1.right_bumper)
         {
             rightRear = (float)(rightRear * .25);
             rightRear = (float)(leftRear * .25);
@@ -180,30 +183,35 @@ public class Kraken_8769 extends OpMode {
         else if (gamepad1.left_bumper) {
             rightFront = (float)(rightFront * .25);
             leftFront = (float)(leftFront * .25);
-        }
+        }*/
 
         motorRF.setPower(rightFront);
-        motorRB.setPower(rightRear);
+        motorRB.setPower(rightFront);
         motorLF.setPower(leftFront);
-        motorLB.setPower(leftRear);
+        motorLB.setPower(leftFront);
 
-        if (gamepad2.right_bumper && (sweeper >= -1 && sweeper < 1))
+        motorArm.setPower(armSpeed);
+
+        sweeper = 0;
+        conveyor = 0;
+
+        if (gamepad2.left_bumper && (sweeper >= -1 && sweeper < 1))
             sweeper = sweeper + 1;
 
-        if (gamepad2.left_bumper && (sweeper <= 1 && sweeper > -1))
+        if (gamepad2.right_bumper && (sweeper <= 1 && sweeper > -1))
             sweeper = sweeper - 1;
 
         Sweeper(sweeper);
 
 
         if (gamepad2.dpad_left && (conveyor >= -.5 && conveyor < .5))
-            conveyor = conveyor + (float).5;
+            conveyor = conveyor + 1;
 
         if (gamepad2.dpad_right && (conveyor <= .5 && conveyor > -.5))
-            conveyor = conveyor - (float).5;
+            conveyor = conveyor - 1;
 
 
-        Conveyor(sweeper);
+        Conveyor(conveyor);
 
 		/*
 		 * Send telemetry data back to driver station. Note that if we are using
@@ -216,12 +224,10 @@ public class Kraken_8769 extends OpMode {
         telemetry.addData("text", "Kraken 8769");
 
         telemetry.addData("ARM", motorArm.getCurrentPosition());
-        telemetry.addData("TAPE", motorTape.getCurrentPosition());
+        //telemetry.addData("TAPE", motorTape.getCurrentPosition());
 
-        telemetry.addData("text",  "LF: " + String.format("%.2f", leftFront));
-        telemetry.addData("text", "RF: " + String.format("%.2f", rightFront));
-        telemetry.addData("text",  "LR: " + String.format("%.2f", leftRear));
-        telemetry.addData("text", "RR: " + String.format("%.2f", rightRear));
+        telemetry.addData("Left",  String.format("%.2f", leftFront));
+        telemetry.addData("Right", String.format("%.2f", rightFront));
 
         if (sweeper == 0)
             telemetry.addData("text", "Sweeper: Stopped");
