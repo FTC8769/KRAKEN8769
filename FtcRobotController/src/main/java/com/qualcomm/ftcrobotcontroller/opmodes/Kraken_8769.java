@@ -131,8 +131,8 @@ public class Kraken_8769 extends OpMode {
         controlArm = hardwareMap.dcMotorController.get(CONTROLARM);
         motorArm = hardwareMap.dcMotor.get(MOTORARM);
 
-       // motorArm.setChannelMode( DcMotorController.RunMode.RESET_ENCODERS);
-        setDriveMode(DcMotorController.RunMode.RUN_WITHOUT_ENCODERS);
+        motorArm.setChannelMode(DcMotorController.RunMode.RESET_ENCODERS);
+        motorArm.setChannelMode(DcMotorController.RunMode.RUN_TO_POSITION);
 
 
         motorLF.setDirection(DcMotor.Direction.REVERSE);
@@ -190,7 +190,8 @@ public class Kraken_8769 extends OpMode {
         motorLF.setPower(leftFront);
         motorLB.setPower(leftFront);
 
-        motorArm.setPower(armSpeed);
+
+        motorArm.setPower(1);
 
         sweeper = 0;
         conveyor = 0;
@@ -210,6 +211,20 @@ public class Kraken_8769 extends OpMode {
         if (gamepad2.dpad_right && (conveyor <= .5 && conveyor > -.5))
             conveyor = conveyor - 1;
 
+        if (gamepad2.a)
+        {
+            motorArm.setTargetPosition(10);
+        }
+
+        if(gamepad2.x)
+        {
+            motorArm.setTargetPosition(0);
+        }
+
+        if (gamepad1.y)
+        {
+            motorArm.setTargetPosition(-10);
+        }
 
         Conveyor(conveyor);
 
@@ -223,7 +238,8 @@ public class Kraken_8769 extends OpMode {
 
         telemetry.addData("text", "Kraken 8769");
 
-        telemetry.addData("ARM", motorArm.getCurrentPosition());
+        int position = Math.abs (motorArm.getCurrentPosition ());
+        telemetry.addData("ARM" + "current position" , position);
         //telemetry.addData("TAPE", motorTape.getCurrentPosition());
 
         telemetry.addData("Left",  String.format("%.2f", leftFront));
@@ -244,14 +260,6 @@ public class Kraken_8769 extends OpMode {
         else
             telemetry.addData("Conveyor", "Right");
 
-    }
-
-    public void Arm(float stick)
-    {
-        if (motorTape.getChannelMode() != DcMotorController.RunMode.RUN_USING_ENCODERS) {
-            motorTape.setChannelMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
-        }
-        //write movement code under this line
     }
 
     public void Tape(float direction)
@@ -280,22 +288,8 @@ public class Kraken_8769 extends OpMode {
      */
     @Override
     public void stop() {
-
+        motorArm.setPower(0);
     }
-
-
-
-
-    public void setDriveMode(DcMotorController.RunMode mode) {
-        if (motorArm.getChannelMode() != mode) {
-            motorArm.setChannelMode(mode);
-        }
-
-        if (motorArm.getChannelMode() != mode) {
-            motorArm.setChannelMode(mode);
-        }
-    }
-
 
     double scaleThrottle(double dStick1, double dStick2)
     {
