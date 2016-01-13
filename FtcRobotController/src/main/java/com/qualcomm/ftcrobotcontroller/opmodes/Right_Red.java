@@ -41,10 +41,12 @@ public class Right_Red extends Kraken_8769_Autonomous_Base {
     public Right_Red() {
 
     }
+
     public void runOpMode(){
         super.runOpMode();
-
-        super.Sweeper(0);
-
+    //    super.Sweeper(-1);
+        super.DriveForward(10);//drive forward 10 inches
+        super.TurnLeft(45);//Turn left 45 degrees
+        super.stopMotors();
     }
 }

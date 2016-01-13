@@ -42,20 +42,17 @@ import com.qualcomm.robotcore.hardware.DcMotorController;
  */
 public class Kraken_8769_Autonomous_Base extends LinearOpMode {
 
-    static String MOTORLF = "motorLF";
-    static String MOTORLB = "motorLB";
-    static String MOTORRF = "motorRF";
-    static String MOTORRB = "motorRB";
+    static String MOTORLF = "mlf"; //Motor left front
+    static String MOTORLB = "mlr"; //Motor left rear
+    static String MOTORRF = "mrf"; //Motor right front
+    static String MOTORRB = "mrr"; //Motor right rear
 
 
-    static String MOTORTILT = "liftT";
-    static String MOTORUPDOWN = "liftUD";
-    static String CONTROLTILT = "controlT";
-    static String CONTROLLIFT = "controlUD";
+    static String MOTORARM = "arm";
+    static String MOTORTAPE = "tape";
 
-
-    static String MOTORSWEEPER = "sweep";
-    static String MOTORCONVEYOR = "conveyor";
+    static String MOTORSWEEPER = "swx";  //Motor front sweeper
+    static String MOTORCONVEYOR = "swy";  //Motor side sweeper
 
     final static double LIFT_MIN_RANGE  = 0.20;
     final static double LIFT_MAX_RANGE  = 0.90;
@@ -73,6 +70,9 @@ public class Kraken_8769_Autonomous_Base extends LinearOpMode {
     DcMotor motorSweeper;
     DcMotor motorConveyor;
     DcMotorController controlLift;
+
+    static int msPerInch = 28;
+    static int msPerDegree = 11;
 
     float sweeper = 0;
     float liftUD = 0;
@@ -96,7 +96,7 @@ public class Kraken_8769_Autonomous_Base extends LinearOpMode {
 
         motorLF.setDirection(DcMotor.Direction.REVERSE);
         motorLB.setDirection(DcMotor.Direction.REVERSE);
-        Sweeper(-1);
+        //Sweeper(-1);
     }
 
 
@@ -108,7 +108,7 @@ public class Kraken_8769_Autonomous_Base extends LinearOpMode {
 
     public void DriveForward(int inches)
     {
-        long time = inches * 1000;
+        long time = inches * msPerInch;
         motorLF.setPower(.25);
         motorLB.setPower(.25);
         motorRB.setPower(.25);
@@ -124,7 +124,7 @@ public class Kraken_8769_Autonomous_Base extends LinearOpMode {
 
     public void DriveBackwards(int inches)
     {
-        long time = inches * 1000;
+        long time = inches * msPerInch;
         motorLF.setPower(-.25);
         motorLB.setPower(-.25);
         motorRB.setPower(-.25);
@@ -141,11 +141,11 @@ public class Kraken_8769_Autonomous_Base extends LinearOpMode {
 
     public void TurnRight(float degrees)
     {
-        long time = (long)degrees * 1000;
-        motorRB.setPower(.1);
-        motorRF.setPower(.1);
-        motorLF.setPower(-.1);
-        motorLB.setPower(-.1);
+        long time = (long)degrees * msPerDegree;
+        motorRB.setPower(.25);
+        motorRF.setPower(.25);
+        motorLF.setPower(-.25);
+        motorLB.setPower(-.25);
         try {
             Thread.sleep(time);
         }
@@ -157,11 +157,11 @@ public class Kraken_8769_Autonomous_Base extends LinearOpMode {
     }
     public void TurnLeft(float degrees)
     {
-        long time = (long)degrees * 1000;
-        motorRB.setPower(-.1);
-        motorRF.setPower(-.1);
-        motorLF.setPower(.1);
-        motorLB.setPower(.1);
+        long time = (long)degrees * msPerDegree;
+        motorRB.setPower(-.25);
+        motorRF.setPower(-.25);
+        motorLF.setPower(.25);
+        motorLB.setPower(.25);
         try {
             Thread.sleep(time);
         }
@@ -183,6 +183,7 @@ public class Kraken_8769_Autonomous_Base extends LinearOpMode {
         motorLB.setPower(0);
         motorRB.setPower(0);
         motorRF.setPower(0);
+        motorSweeper.setPower(0);
     }
 
 }

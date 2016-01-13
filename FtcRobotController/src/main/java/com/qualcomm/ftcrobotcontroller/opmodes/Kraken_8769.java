@@ -36,6 +36,8 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorController;
 import com.qualcomm.robotcore.util.Range;
 
+import static java.lang.Thread.*;
+
 /**
  * TeleOp Mode
  * <p>
@@ -86,6 +88,7 @@ public class Kraken_8769 extends OpMode {
 
     float tapeMin = 0;
     float tapeMax = 0;
+    int armPosition = 0;
 
     /**
      * Constructor
@@ -132,8 +135,8 @@ public class Kraken_8769 extends OpMode {
         motorArm = hardwareMap.dcMotor.get(MOTORARM);
 
         motorArm.setChannelMode(DcMotorController.RunMode.RESET_ENCODERS);
-        motorArm.setChannelMode(DcMotorController.RunMode.RUN_TO_POSITION);
-
+        motorArm.setChannelMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
+        //motorArm.setPower(.1);
 
         motorLF.setDirection(DcMotor.Direction.REVERSE);
         motorLB.setDirection(DcMotor.Direction.REVERSE);
@@ -165,9 +168,6 @@ public class Kraken_8769 extends OpMode {
         float leftFront = throttle + direction;
         //float leftRear = throttle + direction;
 
-
-        float armSpeed = gamepad2.left_stick_y * (float).1;
-
         // clip the right/left values so that the values never exceed +/- 1
         rightFront = Range.clip(rightFront, -1, 1);
         //rightRear = Range.clip(rightRear, -1, 1);
@@ -191,7 +191,7 @@ public class Kraken_8769 extends OpMode {
         motorLB.setPower(leftFront);
 
 
-        motorArm.setPower(1);
+
 
         sweeper = 0;
         conveyor = 0;
@@ -205,25 +205,51 @@ public class Kraken_8769 extends OpMode {
         Sweeper(sweeper);
 
 
-        if (gamepad2.dpad_left && (conveyor >= -.5 && conveyor < .5))
+        if (gamepad2.dpad_left && (conveyor >= -1 && conveyor < 1))
             conveyor = conveyor + 1;
 
-        if (gamepad2.dpad_right && (conveyor <= .5 && conveyor > -.5))
+        if (gamepad2.dpad_right && (conveyor <= 1 && conveyor > -1))
             conveyor = conveyor - 1;
 
-        if (gamepad2.a)
+
+        if (motorArm.getChannelMode() == DcMotorController.RunMode.RUN_USING_ENCODERS)
         {
-            motorArm.setTargetPosition(10);
+            motorArm.setPower((gamepad2.left_stick_y * -.1));
         }
 
-        if(gamepad2.x)
-        {
-            motorArm.setTargetPosition(0);
+        if (motorArm.getCurrentPosition() > 560) {
+            motorArm.setTargetPosition(555);
+            motorArm.setChannelMode(DcMotorController.RunMode.RUN_TO_POSITION);
+            motorArm.setPower(1);
         }
 
-        if (gamepad1.y)
-        {
-            motorArm.setTargetPosition(-10);
+        if (motorArm.getCurrentPosition() <  -60) {
+            motorArm.setTargetPosition(-55);
+            motorArm.setChannelMode(DcMotorController.RunMode.RUN_TO_POSITION);
+            motorArm.setPower(1);
+        }
+
+
+        if (gamepad2.y && motorArm.getChannelMode() == DcMotorController.RunMode.RUN_TO_POSITION) {
+            motorArm.setChannelMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
+            try {
+                Thread.sleep(100);
+            }
+            catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+
+        if (gamepad2.left_stick_button && motorArm.getChannelMode() == DcMotorController.RunMode.RUN_USING_ENCODERS) {
+            motorArm.setTargetPosition(motorArm.getCurrentPosition());
+            motorArm.setChannelMode(DcMotorController.RunMode.RUN_TO_POSITION);
+            motorArm.setPower(1);
+            try {
+                Thread.sleep(100);
+            }
+            catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
 
         Conveyor(conveyor);
@@ -236,21 +262,24 @@ public class Kraken_8769 extends OpMode {
 		 */
 
 
-        telemetry.addData("text", "Kraken 8769");
+        telemetry.addData("Team:", "Kraken 8769");
 
-        int position = Math.abs (motorArm.getCurrentPosition ());
-        telemetry.addData("ARM" + "current position" , position);
+       // int position = Math.abs (motorArm.getCurrentPosition ());
+
+        telemetry.addData("ARM DRIVER position" , armPosition);
+        telemetry.addData("ARM TARGET position" , motorArm.getTargetPosition());
+        telemetry.addData("ARM current position" , motorArm.getCurrentPosition());
         //telemetry.addData("TAPE", motorTape.getCurrentPosition());
 
         telemetry.addData("Left",  String.format("%.2f", leftFront));
         telemetry.addData("Right", String.format("%.2f", rightFront));
 
         if (sweeper == 0)
-            telemetry.addData("text", "Sweeper: Stopped");
+            telemetry.addData("Sweeper", "Sweeper: Stopped");
         else if (sweeper > 0)
-            telemetry.addData("text", "Sweeper: Forward");
+            telemetry.addData("Sweeper", "Sweeper: Forward");
         else
-            telemetry.addData("text", "Sweeper: Reverse");
+            telemetry.addData("Sweeper", "Sweeper: Reverse");
 
 
         if (conveyor == 0)
