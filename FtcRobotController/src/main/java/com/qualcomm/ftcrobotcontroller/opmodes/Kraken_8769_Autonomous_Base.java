@@ -80,7 +80,7 @@ public class Kraken_8769_Autonomous_Base extends LinearOpMode {
     public Kraken_8769_Autonomous_Base() {
 
     }
-    public void runOpMode() {
+    public void runOpMode() throws InterruptedException {
         motorLF = hardwareMap.dcMotor.get(MOTORLF);
         motorLB = hardwareMap.dcMotor.get(MOTORLB);
         motorRF = hardwareMap.dcMotor.get(MOTORRF);
@@ -96,6 +96,8 @@ public class Kraken_8769_Autonomous_Base extends LinearOpMode {
 
         motorLF.setDirection(DcMotor.Direction.REVERSE);
         motorLB.setDirection(DcMotor.Direction.REVERSE);
+
+     waitForStart();
         //Sweeper(-1);
     }
 

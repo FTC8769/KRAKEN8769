@@ -47,7 +47,7 @@ public class Left_Red extends Kraken_8769_Autonomous_Base {
     public Left_Red() {
 
     }
-    public void runOpMode(){
+    public void runOpMode() throws InterruptedException {
         super.runOpMode();
 
         super.Sweeper(0);

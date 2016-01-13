@@ -47,7 +47,7 @@ public class Right_Blue extends Kraken_8769_Autonomous_Base {
     public Right_Blue() {
 
     }
-    public void runOpMode(){
+    public void runOpMode() throws InterruptedException {
         super.runOpMode();
 
         super.Sweeper(0);
