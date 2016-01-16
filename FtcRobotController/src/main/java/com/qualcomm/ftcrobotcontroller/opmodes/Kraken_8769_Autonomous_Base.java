@@ -52,7 +52,7 @@ public class Kraken_8769_Autonomous_Base extends LinearOpMode {
     static String MOTORTAPE = "tape";
 
     static String MOTORSWEEPER = "swx";  //Motor front sweeper
-    static String MOTORCONVEYOR = "swy";  //Motor side sweeper
+    //static String MOTORCONVEYOR = "swy";  //Motor side sweeper
 
     final static double LIFT_MIN_RANGE  = 0.20;
     final static double LIFT_MAX_RANGE  = 0.90;
@@ -68,11 +68,11 @@ public class Kraken_8769_Autonomous_Base extends LinearOpMode {
     DcMotor motorLiftTilt;
     DcMotor motorLiftUpDown;
     DcMotor motorSweeper;
-    DcMotor motorConveyor;
+  //  DcMotor motorConveyor;
     DcMotorController controlLift;
 
     static int msPerInch = 28;
-    static int msPerDegree = 11;
+    static int msPerDegree = 9;
 
     float sweeper = 0;
     float liftUD = 0;
@@ -99,6 +99,14 @@ public class Kraken_8769_Autonomous_Base extends LinearOpMode {
 
      waitForStart();
         //Sweeper(-1);
+        DriveForward(6);
+        DriveBackwards(5);
+        try {
+            Thread.sleep(10500);
+        }
+        catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
 

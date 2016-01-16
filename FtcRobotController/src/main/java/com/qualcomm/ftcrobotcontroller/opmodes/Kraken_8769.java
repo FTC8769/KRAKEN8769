@@ -62,7 +62,7 @@ public class Kraken_8769 extends OpMode {
     static String MOTORTAPE = "tape";
 
     static String MOTORSWEEPER = "swx";  //Motor front sweeper
-    static String MOTORCONVEYOR = "swy";  //Motor side sweeper
+    //static String MOTORCONVEYOR = "swy";  //Motor side sweeper
 
     static String CONTROLARM = "carm";  //Motor side sweeper
 
@@ -75,11 +75,11 @@ public class Kraken_8769 extends OpMode {
     DcMotor motorArm;
     DcMotor motorTape;
     DcMotor motorSweeper;
-    DcMotor motorConveyor;
+    //DcMotor motorConveyor;
     DcMotorController controlArm;
 
 
-    float conveyor = 0;
+    //float conveyor = 0;
     float sweeper = 0;
     float liftUD = 0;
 
@@ -129,7 +129,7 @@ public class Kraken_8769 extends OpMode {
 
         //motorTape = hardwareMap.dcMotor.get(MOTORTAPE);
         motorSweeper = hardwareMap.dcMotor.get(MOTORSWEEPER);
-        motorConveyor = hardwareMap.dcMotor.get(MOTORCONVEYOR);
+      //  motorConveyor = hardwareMap.dcMotor.get(MOTORCONVEYOR);
 
         controlArm = hardwareMap.dcMotorController.get(CONTROLARM);
         motorArm = hardwareMap.dcMotor.get(MOTORARM);
@@ -194,7 +194,7 @@ public class Kraken_8769 extends OpMode {
 
 
         sweeper = 0;
-        conveyor = 0;
+//      //  conveyor = 0;
 
         if (gamepad2.left_bumper && (sweeper >= -1 && sweeper < 1))
             sweeper = sweeper + 1;
@@ -205,11 +205,11 @@ public class Kraken_8769 extends OpMode {
         Sweeper(sweeper);
 
 
-        if (gamepad2.dpad_left && (conveyor >= -1 && conveyor < 1))
-            conveyor = conveyor + 1;
+  //      if (gamepad2.dpad_left && (conveyor >= -1 && conveyor < 1))
+  //          conveyor = conveyor + 1;
 
-        if (gamepad2.dpad_right && (conveyor <= 1 && conveyor > -1))
-            conveyor = conveyor - 1;
+    //    if (gamepad2.dpad_right && (conveyor <= 1 && conveyor > -1))
+    //        conveyor = conveyor - 1;
 
 
         if (motorArm.getChannelMode() == DcMotorController.RunMode.RUN_USING_ENCODERS)
@@ -252,7 +252,7 @@ public class Kraken_8769 extends OpMode {
             }
         }
 
-        Conveyor(conveyor);
+      //  Conveyor(conveyor);
 
 		/*
 		 * Send telemetry data back to driver station. Note that if we are using
@@ -282,13 +282,13 @@ public class Kraken_8769 extends OpMode {
             telemetry.addData("Sweeper", "Sweeper: Reverse");
 
 
-        if (conveyor == 0)
+        /*if (conveyor == 0)
             telemetry.addData("Conveyor", "Stopped");
         else if (conveyor > 0)
             telemetry.addData("Conveyor", "Left");
         else
             telemetry.addData("Conveyor", "Right");
-
+*/
     }
 
     public void Tape(float direction)
@@ -305,9 +305,9 @@ public class Kraken_8769 extends OpMode {
         motorSweeper.setPower(direction);
     }
 
-    public void Conveyor(float direction)
+    //public void Conveyor(float direction)
     {
-        motorConveyor.setPower(direction);
+//        motorConveyor.setPower(direction);
     }
 
     /*

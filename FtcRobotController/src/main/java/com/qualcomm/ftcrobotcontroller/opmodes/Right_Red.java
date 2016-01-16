@@ -44,9 +44,9 @@ public class Right_Red extends Kraken_8769_Autonomous_Base {
 
     public void runOpMode() throws InterruptedException {
         super.runOpMode ();
-        super.DriveForward(24);//drive forward 24 inches 2 tiles
+        super.DriveForward(48);//drive forward 48 inches 2 tiles
         super.TurnLeft(90);//Turn left 90 degrees
-        super.DriveForward(36);//drive forward 36 inches 3 tiles
+        super.DriveForward(72);//drive forward 72 inches 3 tiles
         super.stopMotors();
     }
 }
