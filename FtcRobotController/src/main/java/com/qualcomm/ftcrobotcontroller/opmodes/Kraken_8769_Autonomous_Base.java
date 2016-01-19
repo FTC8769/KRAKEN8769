@@ -72,7 +72,7 @@ public class Kraken_8769_Autonomous_Base extends LinearOpMode {
     DcMotorController controlLift;
 
     static int msPerInch = 28;
-    static int msPerDegree = 9;
+    static float msPerDegree = (float)8.25;
 
     float sweeper = 0;
     float liftUD = 0;
@@ -99,8 +99,8 @@ public class Kraken_8769_Autonomous_Base extends LinearOpMode {
 
      waitForStart();
         //Sweeper(-1);
-        DriveForward(6);
-        DriveBackwards(5);
+        DriveForward(10);
+        DriveBackwards(9);
         try {
             Thread.sleep(10500);
         }
@@ -151,11 +151,11 @@ public class Kraken_8769_Autonomous_Base extends LinearOpMode {
 
     public void TurnRight(float degrees)
     {
-        long time = (long)degrees * msPerDegree;
-        motorRB.setPower(.25);
-        motorRF.setPower(.25);
-        motorLF.setPower(-.25);
-        motorLB.setPower(-.25);
+        long time = (long) (degrees * msPerDegree);
+        motorRB.setPower(-.25);
+        motorRF.setPower(-.25);
+        motorLF.setPower(.25);
+        motorLB.setPower(.25);
         try {
             Thread.sleep(time);
         }
@@ -167,11 +167,11 @@ public class Kraken_8769_Autonomous_Base extends LinearOpMode {
     }
     public void TurnLeft(float degrees)
     {
-        long time = (long)degrees * msPerDegree;
-        motorRB.setPower(-.25);
-        motorRF.setPower(-.25);
-        motorLF.setPower(.25);
-        motorLB.setPower(.25);
+        long time = (long) (degrees * msPerDegree);
+        motorRB.setPower(.25);
+        motorRF.setPower(.25);
+        motorLF.setPower(-.25);
+        motorLB.setPower(-.25);
         try {
             Thread.sleep(time);
         }
