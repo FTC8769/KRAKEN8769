@@ -47,10 +47,6 @@ public class Kraken_8769_Autonomous_Base extends LinearOpMode {
     static String MOTORRF = "mrf"; //Motor right front
     static String MOTORRB = "mrr"; //Motor right rear
 
-
-    static String MOTORARM = "arm";
-    static String MOTORTAPE = "tape";
-
     static String MOTORSWEEPER = "swx";  //Motor front sweeper
     //static String MOTORCONVEYOR = "swy";  //Motor side sweeper
 
@@ -65,11 +61,8 @@ public class Kraken_8769_Autonomous_Base extends LinearOpMode {
     DcMotor motorLF;
     DcMotor motorLB;
 
-    DcMotor motorLiftTilt;
-    DcMotor motorLiftUpDown;
     DcMotor motorSweeper;
   //  DcMotor motorConveyor;
-    DcMotorController controlLift;
 
     static int msPerInch = 28;
     static float msPerDegree = (float)8.25;
@@ -85,24 +78,18 @@ public class Kraken_8769_Autonomous_Base extends LinearOpMode {
         motorLB = hardwareMap.dcMotor.get(MOTORLB);
         motorRF = hardwareMap.dcMotor.get(MOTORRF);
         motorRB = hardwareMap.dcMotor.get(MOTORRB);
-//        motorConveyor = hardwareMap.dcMotor.get(MOTORCONVEYOR);
-//        motorLiftTilt = hardwareMap.dcMotor.get(MOTORTILT);
-//        motorLiftUpDown = hardwareMap.dcMotor.get(MOTORUPDOWN);
         motorSweeper = hardwareMap.dcMotor.get(MOTORSWEEPER);
-
-        //controlLift = hardwareMap.dcMotorController.get(CONTROLLIFT);
-        //setDriveMode(DcMotorController.RunMode.RUN_TO_POSITION);
-
-
         motorLF.setDirection(DcMotor.Direction.REVERSE);
         motorLB.setDirection(DcMotor.Direction.REVERSE);
 
-     waitForStart();
-        //Sweeper(-1);
-        DriveForward(10);
-        DriveBackwards(9);
+        waitForStart();
+        
         try {
-            Thread.sleep(10500);
+        //Sweeper(-1);
+            DriveForward(10);
+            Thread.sleep(500);
+            DriveBackwards(9);
+            Thread.sleep(10000);
         }
         catch (InterruptedException e) {
             e.printStackTrace();
@@ -180,11 +167,6 @@ public class Kraken_8769_Autonomous_Base extends LinearOpMode {
         }
 
         stopMotors();
-    }
-
-    public void Climb(int inches)
-    {
-
     }
 
     public void stopMotors()

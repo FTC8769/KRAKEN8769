@@ -57,14 +57,8 @@ public class Kraken_8769 extends OpMode {
     static String MOTORRF = "mrf"; //Motor right front
     static String MOTORRB = "mrr"; //Motor right rear
 
-
-    static String MOTORARM = "arm";
-    static String MOTORTAPE = "tape";
-
     static String MOTORSWEEPER = "swx";  //Motor front sweeper
-    //static String MOTORCONVEYOR = "swy";  //Motor side sweeper
-
-    static String CONTROLARM = "carm";  //Motor side sweeper
+    static String MOTORCONVEYOR = "swy";  //Motor front sweeper
 
     DcMotor motorRF;
     DcMotor motorRB;
@@ -72,22 +66,12 @@ public class Kraken_8769 extends OpMode {
     DcMotor motorLF;
     DcMotor motorLB;
 
-    DcMotor motorArm;
-    DcMotor motorTape;
     DcMotor motorSweeper;
-    //DcMotor motorConveyor;
-    DcMotorController controlArm;
+    DcMotor motorConveyor;
 
 
-    //float conveyor = 0;
+    float conveyor = 0;
     float sweeper = 0;
-    float liftUD = 0;
-
-    float armMin = 0;
-    float armMax = 0;
-
-    float tapeMin = 0;
-    float tapeMax = 0;
     int armPosition = 0;
 
     /**
@@ -127,16 +111,8 @@ public class Kraken_8769 extends OpMode {
         motorRF = hardwareMap.dcMotor.get(MOTORRF);
         motorRB = hardwareMap.dcMotor.get(MOTORRB);
 
-        //motorTape = hardwareMap.dcMotor.get(MOTORTAPE);
         motorSweeper = hardwareMap.dcMotor.get(MOTORSWEEPER);
-      //  motorConveyor = hardwareMap.dcMotor.get(MOTORCONVEYOR);
-
-        controlArm = hardwareMap.dcMotorController.get(CONTROLARM);
-        motorArm = hardwareMap.dcMotor.get(MOTORARM);
-
-        motorArm.setChannelMode(DcMotorController.RunMode.RESET_ENCODERS);
-        motorArm.setChannelMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
-        //motorArm.setPower(.1);
+        motorConveyor = hardwareMap.dcMotor.get(MOTORCONVEYOR);
 
         motorLF.setDirection(DcMotor.Direction.REVERSE);
         motorLB.setDirection(DcMotor.Direction.REVERSE);
@@ -164,33 +140,16 @@ public class Kraken_8769 extends OpMode {
         float throttle = (float)scaleThrottle(-gamepad1.left_stick_y, gamepad1.right_stick_y);
         float direction = (float)scaleThrottle(gamepad1.left_stick_x, gamepad1.right_stick_y);
         float rightFront = throttle - direction;
-        //float rightRear = throttle - direction;
         float leftFront = throttle + direction;
-        //float leftRear = throttle + direction;
 
         // clip the right/left values so that the values never exceed +/- 1
         rightFront = Range.clip(rightFront, -1, 1);
-        //rightRear = Range.clip(rightRear, -1, 1);
         leftFront = Range.clip(leftFront, -1, 1);
-        //leftRear = Range.clip(leftRear, -1, 1);
-
-        // write the values to the motors
-/*        if (gamepad1.right_bumper)
-        {
-            rightRear = (float)(rightRear * .25);
-            rightRear = (float)(leftRear * .25);
-        }
-        else if (gamepad1.left_bumper) {
-            rightFront = (float)(rightFront * .25);
-            leftFront = (float)(leftFront * .25);
-        }*/
 
         motorRF.setPower(rightFront);
         motorRB.setPower(rightFront);
         motorLF.setPower(leftFront);
         motorLB.setPower(leftFront);
-
-
 
 
         sweeper = 0;
@@ -202,57 +161,15 @@ public class Kraken_8769 extends OpMode {
         if (gamepad2.right_bumper && (sweeper <= 1 && sweeper > -1))
             sweeper = sweeper - 1;
 
+        if (gamepad2.dpad_left && (conveyor >= -1 && conveyor < 1))
+            conveyor = conveyor + 1;
+
+        if (gamepad2.dpad_right && (conveyor <= 1 && conveyor > -1))
+            conveyor = conveyor - 1;
+
         Sweeper(sweeper);
 
-
-  //      if (gamepad2.dpad_left && (conveyor >= -1 && conveyor < 1))
-  //          conveyor = conveyor + 1;
-
-    //    if (gamepad2.dpad_right && (conveyor <= 1 && conveyor > -1))
-    //        conveyor = conveyor - 1;
-
-
-        if (motorArm.getChannelMode() == DcMotorController.RunMode.RUN_USING_ENCODERS)
-        {
-            motorArm.setPower((gamepad2.left_stick_y * -.1));
-        }
-
-        if (motorArm.getCurrentPosition() > 560) {
-            motorArm.setTargetPosition(555);
-            motorArm.setChannelMode(DcMotorController.RunMode.RUN_TO_POSITION);
-            motorArm.setPower(1);
-        }
-
-        if (motorArm.getCurrentPosition() <  -60) {
-            motorArm.setTargetPosition(-55);
-            motorArm.setChannelMode(DcMotorController.RunMode.RUN_TO_POSITION);
-            motorArm.setPower(1);
-        }
-
-
-        if (gamepad2.y && motorArm.getChannelMode() == DcMotorController.RunMode.RUN_TO_POSITION) {
-            motorArm.setChannelMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
-            try {
-                Thread.sleep(100);
-            }
-            catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
-
-        if (gamepad2.left_stick_button && motorArm.getChannelMode() == DcMotorController.RunMode.RUN_USING_ENCODERS) {
-            motorArm.setTargetPosition(motorArm.getCurrentPosition());
-            motorArm.setChannelMode(DcMotorController.RunMode.RUN_TO_POSITION);
-            motorArm.setPower(1);
-            try {
-                Thread.sleep(100);
-            }
-            catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
-
-      //  Conveyor(conveyor);
+        Conveyor(conveyor);
 
 		/*
 		 * Send telemetry data back to driver station. Note that if we are using
@@ -262,17 +179,10 @@ public class Kraken_8769 extends OpMode {
 		 */
 
 
-        telemetry.addData("Team:", "Kraken 8769");
 
        // int position = Math.abs (motorArm.getCurrentPosition ());
 
-        telemetry.addData("ARM DRIVER position" , armPosition);
-        telemetry.addData("ARM TARGET position" , motorArm.getTargetPosition());
-        telemetry.addData("ARM current position" , motorArm.getCurrentPosition());
-        //telemetry.addData("TAPE", motorTape.getCurrentPosition());
 
-        telemetry.addData("Left",  String.format("%.2f", leftFront));
-        telemetry.addData("Right", String.format("%.2f", rightFront));
 
         if (sweeper == 0)
             telemetry.addData("Sweeper", "Sweeper: Stopped");
@@ -282,22 +192,17 @@ public class Kraken_8769 extends OpMode {
             telemetry.addData("Sweeper", "Sweeper: Reverse");
 
 
-        /*if (conveyor == 0)
+        if (conveyor == 0)
             telemetry.addData("Conveyor", "Stopped");
         else if (conveyor > 0)
             telemetry.addData("Conveyor", "Left");
         else
             telemetry.addData("Conveyor", "Right");
-*/
-    }
 
-    public void Tape(float direction)
-    {
-        if (motorTape.getChannelMode() != DcMotorController.RunMode.RUN_USING_ENCODERS) {
-            motorTape.setChannelMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
-        }
-        //int pos = controlLift.setMotorTargetPosition();
-        //write movement code under this line
+        telemetry.addData("Left",  String.format("%.2f", leftFront));
+        telemetry.addData("Right", String.format("%.2f", rightFront));
+        telemetry.addData("Team:", "Kraken 8769");
+
     }
 
     public void Sweeper(float direction)
@@ -305,9 +210,9 @@ public class Kraken_8769 extends OpMode {
         motorSweeper.setPower(direction);
     }
 
-    //public void Conveyor(float direction)
+    public void Conveyor(float direction)
     {
-//        motorConveyor.setPower(direction);
+        motorConveyor.setPower(direction);
     }
 
     /*
@@ -317,7 +222,8 @@ public class Kraken_8769 extends OpMode {
      */
     @Override
     public void stop() {
-        motorArm.setPower(0);
+        motorConveyor.setPower(0);
+        motorSweeper.setPower(0);
     }
 
     double scaleThrottle(double dStick1, double dStick2)
