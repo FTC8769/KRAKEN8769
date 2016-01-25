@@ -33,10 +33,8 @@ package com.qualcomm.ftcrobotcontroller.opmodes;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorController;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.Range;
-
-import static java.lang.Thread.*;
 
 /**
  * TeleOp Mode
@@ -57,8 +55,9 @@ public class Kraken_8769 extends OpMode {
     static String MOTORRF = "mrf"; //Motor right front
     static String MOTORRB = "mrr"; //Motor right rear
 
-    static String MOTORSWEEPER = "swx";  //Motor front sweeper
-    static String MOTORCONVEYOR = "swy";  //Motor front sweeper
+    static String MOTORARM = "swx";  //Motor arm
+
+    static String SERVOBUCKET = "bkt";
 
     DcMotor motorRF;
     DcMotor motorRB;
@@ -66,13 +65,11 @@ public class Kraken_8769 extends OpMode {
     DcMotor motorLF;
     DcMotor motorLB;
 
-    DcMotor motorSweeper;
-    DcMotor motorConveyor;
+    DcMotor motorArm;
 
+    Servo servoBucket;
 
-    float conveyor = 0;
-    float sweeper = 0;
-    int armPosition = 0;
+    float arm = 0;
 
     /**
      * Constructor
@@ -110,9 +107,9 @@ public class Kraken_8769 extends OpMode {
         motorLB = hardwareMap.dcMotor.get(MOTORLB);
         motorRF = hardwareMap.dcMotor.get(MOTORRF);
         motorRB = hardwareMap.dcMotor.get(MOTORRB);
+        servoBucket = hardwareMap.servo.get(SERVOBUCKET);
 
-        motorSweeper = hardwareMap.dcMotor.get(MOTORSWEEPER);
-        motorConveyor = hardwareMap.dcMotor.get(MOTORCONVEYOR);
+        motorArm = hardwareMap.dcMotor.get(MOTORARM);
 
         motorLF.setDirection(DcMotor.Direction.REVERSE);
         motorLB.setDirection(DcMotor.Direction.REVERSE);
@@ -151,25 +148,20 @@ public class Kraken_8769 extends OpMode {
         motorLF.setPower(leftFront);
         motorLB.setPower(leftFront);
 
+        servoBucket.setPosition(gamepad2.left_stick_y);
 
-        sweeper = 0;
+        arm = 0;
 //      //  conveyor = 0;
 
-        if (gamepad2.left_bumper && (sweeper >= -1 && sweeper < 1))
-            sweeper = sweeper + 1;
+        if (gamepad2.left_bumper && (arm >= -1 && arm < 1))
+            arm = arm + 1;
 
-        if (gamepad2.right_bumper && (sweeper <= 1 && sweeper > -1))
-            sweeper = sweeper - 1;
+        if (gamepad2.right_bumper && (arm <= 1 && arm > -1))
+            arm = arm - 1;
 
-        if (gamepad2.dpad_left && (conveyor >= -1 && conveyor < 1))
-            conveyor = conveyor + 1;
 
-        if (gamepad2.dpad_right && (conveyor <= 1 && conveyor > -1))
-            conveyor = conveyor - 1;
+        Arm(arm);
 
-        Sweeper(sweeper);
-
-        Conveyor(conveyor);
 
 		/*
 		 * Send telemetry data back to driver station. Note that if we are using
@@ -184,35 +176,22 @@ public class Kraken_8769 extends OpMode {
 
 
 
-        if (sweeper == 0)
+/*        if (arm == 0)
             telemetry.addData("Sweeper", "Sweeper: Stopped");
-        else if (sweeper > 0)
+        else if (arm > 0)
             telemetry.addData("Sweeper", "Sweeper: Forward");
         else
             telemetry.addData("Sweeper", "Sweeper: Reverse");
 
-
-        if (conveyor == 0)
-            telemetry.addData("Conveyor", "Stopped");
-        else if (conveyor > 0)
-            telemetry.addData("Conveyor", "Left");
-        else
-            telemetry.addData("Conveyor", "Right");
-
         telemetry.addData("Left",  String.format("%.2f", leftFront));
         telemetry.addData("Right", String.format("%.2f", rightFront));
-        telemetry.addData("Team:", "Kraken 8769");
+        telemetry.addData("Team:", "Kraken 8769");*/
 
     }
 
-    public void Sweeper(float direction)
+    public void Arm(float direction)
     {
-        motorSweeper.setPower(direction);
-    }
-
-    public void Conveyor(float direction)
-    {
-        motorConveyor.setPower(direction);
+        motorArm.setPower(direction);
     }
 
     /*
@@ -222,8 +201,7 @@ public class Kraken_8769 extends OpMode {
      */
     @Override
     public void stop() {
-        motorConveyor.setPower(0);
-        motorSweeper.setPower(0);
+        motorArm.setPower(0);
     }
 
     double scaleThrottle(double dStick1, double dStick2)

@@ -31,12 +31,6 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. */
 
 package com.qualcomm.ftcrobotcontroller.opmodes;
 
-import com.qualcomm.robotcore.eventloop.opmode.OpMode;
-import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorController;
-import com.qualcomm.robotcore.hardware.Servo;
-import com.qualcomm.robotcore.hardware.TouchSensor;
-import com.qualcomm.robotcore.util.Range;
 public class Right_Red extends Kraken_8769_Autonomous_Base {
     public Right_Red() {
 
@@ -47,6 +41,7 @@ public class Right_Red extends Kraken_8769_Autonomous_Base {
         super.DriveForward(48);//drive forward 48 inches 2 tiles
         super.TurnLeft(90);//Turn left 90 degrees
         super.DriveForward(72);//drive forward 72 inches 3 tiles
-        super.stopMotors();
+        servoBucket.setPosition(-1);
+
     }
 }
