@@ -75,7 +75,8 @@ public class Kraken_8769_Autonomous_Base extends LinearOpMode {
         motorRB = hardwareMap.dcMotor.get(MOTORRB);
         motorLF.setDirection(DcMotor.Direction.REVERSE);
         motorLB.setDirection(DcMotor.Direction.REVERSE);
-
+        motorArm = hardwareMap.dcMotor.get(MOTORARM);
+        
         servoBucket = hardwareMap.servo.get(SERVOBUCKET);
 
         waitForStart();
