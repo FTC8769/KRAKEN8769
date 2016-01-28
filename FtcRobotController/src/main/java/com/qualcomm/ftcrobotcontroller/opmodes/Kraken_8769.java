@@ -209,13 +209,13 @@ public class Kraken_8769 extends OpMode {
         double dReturnVal = 0.0;
         double dInputScale = 0.0;
 
-        dInputScale = (dStick2 + 1) / 2;
+        dInputScale = (dStick2 + 1);
 
         if (dInputScale == 0) dInputScale = 0.1;
 
         dReturnVal = dStick1 * dInputScale;
 
-        return dReturnVal;
+        return dReturnVal *.5;
     }
 
     /*
