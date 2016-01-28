@@ -76,8 +76,9 @@ public class PushBotHardwareSensors extends PushBotTelemetry
         }
         catch (Exception p_exeception)
         {
-            m_warning_message ("sensor_touch");
-            DbgLog.msg (p_exeception.getLocalizedMessage ());
+            // die quietly
+           // m_warning_message ("sensor_touch");
+          //  DbgLog.msg (p_exeception.getLocalizedMessage ());
 
             v_sensor_touch = null;
         }
@@ -396,3 +397,6 @@ public class PushBotHardwareSensors extends PushBotTelemetry
     private OpticalDistanceSensor v_sensor_ods;
 
 } // PushBotHardwareSensors
+
+
+

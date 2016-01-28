@@ -31,9 +31,11 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. */
 
 package com.qualcomm.ftcrobotcontroller.opmodes;
 
+import com.qualcomm.ftccommon.DbgLog;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.hardware.TouchSensor;
 
 /**
  * TeleOp Mode
@@ -48,7 +50,6 @@ public class Kraken_8769_Autonomous_Base extends LinearOpMode {
     static String MOTORRB = "mrr"; //Motor right rear
     static String SERVOBUCKET = "bkt";
     static String MOTORARM = "swx";  //Motor arm
-
 
     DcMotor motorRF;
     DcMotor motorRB;
@@ -66,31 +67,102 @@ public class Kraken_8769_Autonomous_Base extends LinearOpMode {
     float liftUD = 0;
 
     public Kraken_8769_Autonomous_Base() {
-
     }
-    public void runOpMode() throws InterruptedException {
-        motorLF = hardwareMap.dcMotor.get(MOTORLF);
-        motorLB = hardwareMap.dcMotor.get(MOTORLB);
-        motorRF = hardwareMap.dcMotor.get(MOTORRF);
-        motorRB = hardwareMap.dcMotor.get(MOTORRB);
-        motorLF.setDirection(DcMotor.Direction.REVERSE);
-        motorLB.setDirection(DcMotor.Direction.REVERSE);
-        motorArm = hardwareMap.dcMotor.get(MOTORARM);
-        
-        servoBucket = hardwareMap.servo.get(SERVOBUCKET);
 
+    public void runOpMode() throws InterruptedException
+    {
+        //        telemetry.clearData();
+        mapMotors();
         waitForStart();
-        
-        try {
+        try
+        {
             DriveForward(10);
             Thread.sleep(500);
             DriveBackwards(9);
             Thread.sleep(10000);
         }
         catch (InterruptedException e) {
+            DbgLog.msg( "autonomous code failed!");
+            DbgLog.msg( e.getLocalizedMessage() );
             e.printStackTrace();
         }
     }
+
+    public void mapMotors()
+    {
+        try
+        {
+            motorLF = hardwareMap.dcMotor.get(MOTORLF);
+            motorLF.setDirection(DcMotor.Direction.REVERSE);
+        }
+        catch (Exception p_exeception)
+        {
+            DbgLog.msg( "motorLF is not working!");
+            DbgLog.msg (p_exeception.getLocalizedMessage ());
+            motorLF = null;
+        }
+
+        try
+        {
+            motorLB = hardwareMap.dcMotor.get(MOTORARM);
+            motorLB.setDirection(DcMotor.Direction.REVERSE);
+        }
+        catch (Exception p_exeception)
+        {
+            DbgLog.msg( "motorLB is not working!");
+            DbgLog.msg (p_exeception.getLocalizedMessage ());
+            motorLB = null;
+        }
+
+        try
+        {
+            motorRF = hardwareMap.dcMotor.get(MOTORRF);
+        }
+        catch (Exception p_exeception)
+        {
+            DbgLog.msg( "motorRF is not working!");
+            DbgLog.msg (p_exeception.getLocalizedMessage ());
+            motorRF = null;
+        }
+
+        try
+        {
+            motorRB = hardwareMap.dcMotor.get(MOTORRB);
+        }
+        catch (Exception p_exeception)
+        {
+            DbgLog.msg( "motorRB is not working!");
+            DbgLog.msg (p_exeception.getLocalizedMessage ());
+            motorRB = null;
+        }
+
+        try
+        {
+            motorArm = hardwareMap.dcMotor.get(MOTORARM);
+        }
+        catch (Exception p_exeception)
+        {
+            DbgLog.msg( "motorArm is not working!");
+            DbgLog.msg (p_exeception.getLocalizedMessage ());
+            motorArm = null;
+        }
+
+        try
+        {
+            v_sensor_touch = hardwareMap.touchSensor.get ("sensor_touch");
+        }
+
+        catch (Exception p_exeception)
+        {
+            DbgLog.msg( "sensor_touch is not working!");
+            DbgLog.msg (p_exeception.getLocalizedMessage ());
+            v_sensor_touch = null;
+        }
+
+        servoBucket = hardwareMap.servo.get(SERVOBUCKET);
+
+    }
+
 
 
 
@@ -120,6 +192,61 @@ public class Kraken_8769_Autonomous_Base extends LinearOpMode {
         }
         stopMotors();
     }
+
+    //--------------------------------------------------------------------------
+    //
+    // is_touch_sensor_pressed
+    //
+    /**
+     * Indicate whether the touch sensor has been pressed.
+     */
+    boolean is_touch_sensor_pressed ()
+
+    {
+        boolean l_return = false;
+
+        if (v_sensor_touch != null)
+        {
+            l_return = v_sensor_touch.isPressed ();
+        }
+
+        return l_return;
+
+    } // is_touch_sensor_pressed
+
+
+    //--------------------------------------------------------------------------
+    //
+    // move_arm_upward_until_touch
+    //
+    /**
+     * Apply upward power to the arm motor until the touch sensor is pressed.
+     */
+    boolean move_arm_upward_until_touch ()
+
+    {
+        //
+        // If the touch sensor is pressed, halt the motors.
+        //
+        if (is_touch_sensor_pressed ())
+        {
+            //m_left_arm_power (0.0f);
+        }
+        //
+        // Move the arm upward at full power.
+        //
+        else
+        {
+            //m_left_arm_power (1.0f);
+        }
+
+        //
+        // Return whether the sensor has been pressed.
+        //
+        return is_touch_sensor_pressed ();
+
+    } // move_arm_upward_until_touch
+
 
     public void DriveBackwards(int inches)
     {
@@ -179,5 +306,7 @@ public class Kraken_8769_Autonomous_Base extends LinearOpMode {
         motorRF.setPower(0);
         motorArm.setPower(0);
     }
+
+    private TouchSensor v_sensor_touch;
 
 }
