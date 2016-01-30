@@ -159,7 +159,18 @@ public class Kraken_8769_Autonomous_Base extends LinearOpMode {
             v_sensor_touch = null;
         }
 
-        servoBucket = hardwareMap.servo.get(SERVOBUCKET);
+        try
+        {
+            servoBucket = hardwareMap.servo.get(SERVOBUCKET);
+        }
+
+        catch (Exception p_exeception)
+        {
+            DbgLog.msg( "servoBucket is not working!");
+            DbgLog.msg (p_exeception.getLocalizedMessage ());
+            servoBucket = null;
+        }
+
 
     }
 
@@ -225,24 +236,18 @@ public class Kraken_8769_Autonomous_Base extends LinearOpMode {
     boolean move_arm_upward_until_touch ()
 
     {
-        //
-        // If the touch sensor is pressed, halt the motors.
-        //
         if (is_touch_sensor_pressed ())
         {
-            //m_left_arm_power (0.0f);
+//            servoBucket.setPosition(.9);
+            telemetry.addData( "true: ", "pressed");
+            return is_touch_sensor_pressed ();
         }
-        //
-        // Move the arm upward at full power.
-        //
-        else
+       else
         {
-            //m_left_arm_power (1.0f);
+//            servoBucket.setPosition(0.1);
+            telemetry.addData( "false: ", "not pressed");
+            move_arm_upward_until_touch();
         }
-
-        //
-        // Return whether the sensor has been pressed.
-        //
         return is_touch_sensor_pressed ();
 
     } // move_arm_upward_until_touch

@@ -64,6 +64,7 @@ public class FtcOpModeRegister implements OpModeRegister {
     manager.register ("Human Control", Kraken_8769.class);
     manager.register ("Left Blue", Left_Blue.class);
     manager.register ("Left Red", Left_Red.class);
+    manager.register ("Touch Test", TouchTest.class);
     manager.register ("Right Blue", Right_Blue.class);
     manager.register ("Right Red", Right_Red.class);
     /*

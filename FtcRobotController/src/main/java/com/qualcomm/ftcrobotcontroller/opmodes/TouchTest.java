@@ -31,32 +31,35 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. */
 
 package com.qualcomm.ftcrobotcontroller.opmodes;
 
+import android.hardware.Sensor;
+
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.TouchSensor;
+
 /**
  * TeleOp Mode
  * <p>
  * Enables control of the robot via the gamepad
  */
-public class Blue_Left_First extends Kraken_8769_Autonomous_Base {
+public class TouchTest extends LinearOpMode {
 
-    public Blue_Left_First() {
+    public TouchTest() {
 
     }
     public void runOpMode() throws InterruptedException {
-        super.runOpMode();
-        super.DriveForward(24);
-        super.TurnRight(45);
-        super.DriveForward(68);
-        super.TurnRight(45);
-       // super.TouchOffWall();
-        /*
-        super.extend arm(1);
-        super.lower bucket(1)
-         */
-        super.DriveBackwards(24);
-        super.TurnRight(45);
-        super.DriveForward(24);
-        super.stopMotors();
-        servoBucket.setPosition(-1);
+        waitForStart();
+        TouchSensor touch1;
+        touch1 = hardwareMap.touchSensor.get("touch1");
+        telemetry.addData("bob", "message here!!!");
+        telemetry.addData( "touch1", "start" );
+        while(true) {
+            if (touch1.isPressed()) {
+                telemetry.addData("touch1", "pressed true");
+            }
+            if (touch1.isPressed()) {
+                telemetry.addData("touch1", "pressed false");
+            }
+        }
+        //  telemetry.addData( "touch1", "finish" );
     }
-
 }
