@@ -1,7 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-
-<!--
-Copyright (c) 2014, 2015 Qualcomm Technologies Inc
+/* Copyright (c) 2014 Qualcomm Technologies Inc
 
 All rights reserved.
 
@@ -30,19 +27,36 @@ DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
 SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
 CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
 OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
-OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
--->
+OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. */
 
-<resources>
-  <color name="light_green_background">#81c784</color>
-  <color name="dark_green_background">#1b5e20</color>
-  <color name="medium_green_background">#4caf50</color>
-  <color name="very_bright_green">#a5d6a7</color>
-  <color name="bright_green">#4caf50</color>
-  <color name="bright_green_text">#81c784</color>
-  <color name="white">#FFFFFF</color>
-  <color name="black">#000000</color>
-  <color name="transparent_color">#00000000</color>
-  <color name="krakenlightred">#a00000</color>
-  <color name="krakendarkred">#790000</color>
-</resources>
+package com.qualcomm.ftcrobotcontroller.opmodes;
+
+/**
+ * TeleOp Mode
+ * <p>
+ * Enables control of the robot via the gamepad
+ */
+public class Blue_Left_First extends Kraken_8769_Autonomous_Base {
+
+    public Blue_Left_First() {
+
+    }
+    public void runOpMode() throws InterruptedException {
+        super.runOpMode();
+        super.DriveForward(24);
+        super.TurnRight(45);
+        super.DriveForward(68);
+        super.TurnRight(45);
+        super.TouchOffWall();
+        /*
+        super.extend arm(1);
+        super.lower bucket(1)
+         */
+        super.DriveBackwards(24);
+        super.TurnRight(45);
+        super.DriveForward(24);
+        super.stopMotors();
+        servoBucket.setPosition(-1);
+    }
+
+}
