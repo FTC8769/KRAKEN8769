@@ -31,34 +31,42 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. */
 
 package com.qualcomm.ftcrobotcontroller.opmodes;
 
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.hardware.TouchSensor;
+
 /**
  * TeleOp Mode
  * <p>
  * Enables control of the robot via the gamepad
  */
-public class Blue_Left_First extends Kraken_8769_Autonomous_Base {
+public class BucketTest extends LinearOpMode {
 
-    public Blue_Left_First() {
+    public BucketTest() {
 
     }
     public void runOpMode() throws InterruptedException {
-        super.DriveForward(9);
-        super.TurnLeft(45);
-        super.DriveForward(49);
-        super.TurnLeft(45);
-       // super.TouchOffWall();
-        /*
-        super.extend arm(1);
-        super.lower bucket(1)
-         */
-        super.DriveForward(12);
-        /**
-        //super.TurnRight(45);
-        //super.DriveForward(11.5);
-         Un-needed code^
-        */
-        super.stopMotors();
-       // servoBucket.setPosition(1);
-    }
+        waitForStart();
+        TouchSensor touch1;
+        Servo servoBucket;
+        touch1 = hardwareMap.touchSensor.get("touch1");
+        servoBucket = hardwareMap.servo.get("bkt");
+        telemetry.addData("bob", "message here!!!");
+        telemetry.addData( "touch1", "start" );
+        while(true) {
+            telemetry.addData("touch1", "---------");
 
+            telemetry.addData("touch1", ".");
+            if (touch1.isPressed()) {
+                telemetry.addData("touch1", "pressed true");
+                servoBucket.setPosition(.9);
+            }
+           else {
+                telemetry.addData("touch1", "pressed false");
+                servoBucket.setPosition(.1);
+            }
+            Thread.sleep(5);
+        }
+        //telemetry.addData( "touch1", "finish" );
+    }
 }

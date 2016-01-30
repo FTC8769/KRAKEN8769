@@ -148,7 +148,7 @@ public class Kraken_8769 extends OpMode {
         motorLF.setPower(leftFront);
         motorLB.setPower(leftFront);
 
-       // servoBucket.setPosition(gamepad2.left_stick_y);
+       servoBucket.setPosition( (1+ gamepad2.left_stick_y )/ 2 );
 
         arm = 0;
 //      //  conveyor = 0;

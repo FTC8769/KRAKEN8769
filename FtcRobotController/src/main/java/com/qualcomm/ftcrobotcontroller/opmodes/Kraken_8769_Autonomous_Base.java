@@ -48,6 +48,7 @@ public class Kraken_8769_Autonomous_Base extends LinearOpMode {
     static String MOTORLB = "mlr"; //Motor left rear
     static String MOTORRF = "mrf"; //Motor right front
     static String MOTORRB = "mrr"; //Motor right rear
+
     static String SERVOBUCKET = "bkt";
     static String MOTORARM = "swx";  //Motor arm
 
@@ -76,10 +77,10 @@ public class Kraken_8769_Autonomous_Base extends LinearOpMode {
         waitForStart();
         try
         {
-            DriveForward(10);
+            DriveForward(2);
             Thread.sleep(500);
-            DriveBackwards(9);
-            Thread.sleep(10000);
+            DriveBackwards(1);
+            Thread.sleep(500);
         }
         catch (InterruptedException e) {
             DbgLog.msg( "autonomous code failed!");
@@ -104,7 +105,7 @@ public class Kraken_8769_Autonomous_Base extends LinearOpMode {
 
         try
         {
-            motorLB = hardwareMap.dcMotor.get(MOTORARM);
+            motorLB = hardwareMap.dcMotor.get(MOTORLB);
             motorLB.setDirection(DcMotor.Direction.REVERSE);
         }
         catch (Exception p_exeception)
@@ -245,7 +246,7 @@ public class Kraken_8769_Autonomous_Base extends LinearOpMode {
        else
         {
 //            servoBucket.setPosition(0.1);
-            telemetry.addData( "false: ", "not pressed");
+            telemetry.addData("false: ", "not pressed");
             move_arm_upward_until_touch();
         }
         return is_touch_sensor_pressed ();
