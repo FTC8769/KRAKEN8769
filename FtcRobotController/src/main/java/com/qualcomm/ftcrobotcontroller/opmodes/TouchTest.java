@@ -53,13 +53,17 @@ public class TouchTest extends LinearOpMode {
         telemetry.addData("bob", "message here!!!");
         telemetry.addData( "touch1", "start" );
         while(true) {
+            telemetry.addData("touch1", "---------");
+
+            telemetry.addData("touch1", ".");
             if (touch1.isPressed()) {
                 telemetry.addData("touch1", "pressed true");
             }
-            if (touch1.isPressed()) {
+           else {
                 telemetry.addData("touch1", "pressed false");
             }
+            Thread.sleep(5);
         }
-        //  telemetry.addData( "touch1", "finish" );
+        //telemetry.addData( "touch1", "finish" );
     }
 }
