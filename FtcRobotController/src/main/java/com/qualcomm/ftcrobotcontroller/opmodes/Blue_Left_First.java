@@ -45,9 +45,9 @@ public class Blue_Left_First extends Kraken_8769_Autonomous_Base {
         speed = .15;
         super.runOpMode();
         super.DriveForward(18);
-        super.TurnLeft(45);
+        super.TurnRight(45);
         super.DriveForward(80);
-        super.TurnLeft(45);
+        super.TurnRight(45);
        // super.TouchOffWall();
         /*
         super.extend arm(1);
