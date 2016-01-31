@@ -51,7 +51,8 @@ public class Kraken_8769_Autonomous_Base extends LinearOpMode {
 
     static String SERVOBUCKET = "bkt";
     static String MOTORARM = "swx";  //Motor arm
-
+    double speed = .15;
+    double turnSpeed = .35;
     DcMotor motorRF;
     DcMotor motorRB;
     DcMotor motorLF;
@@ -69,6 +70,13 @@ public class Kraken_8769_Autonomous_Base extends LinearOpMode {
 
     public Kraken_8769_Autonomous_Base() {
     }
+
+    public int scaleDistance( int inches )
+    {
+
+        return inches;
+    }
+
 
     public void runOpMode() throws InterruptedException
     {
@@ -192,10 +200,11 @@ public class Kraken_8769_Autonomous_Base extends LinearOpMode {
     public void DriveForward(int inches)
     {
         long time = inches * msPerInch;
-        motorLF.setPower(.25);
-        motorLB.setPower(.25);
-        motorRB.setPower(.25);
-        motorRF.setPower(.25);
+
+        motorLF.setPower(speed);
+        motorLB.setPower(speed);
+        motorRB.setPower(speed);
+        motorRF.setPower(speed);
         try {
             Thread.sleep(time);
         }
@@ -257,10 +266,10 @@ public class Kraken_8769_Autonomous_Base extends LinearOpMode {
     public void DriveBackwards(int inches)
     {
         long time = inches * msPerInch;
-        motorLF.setPower(-.25);
-        motorLB.setPower(-.25);
-        motorRB.setPower(-.25);
-        motorRF.setPower(-.25);
+        motorLF.setPower(-speed);
+        motorLB.setPower(-speed);
+        motorRB.setPower(-speed);
+        motorRF.setPower(-speed);
         try {
             Thread.sleep(time);
         }
@@ -274,10 +283,10 @@ public class Kraken_8769_Autonomous_Base extends LinearOpMode {
     public void TurnRight(float degrees)
     {
         long time = (long) (degrees * msPerDegree);
-        motorRB.setPower(-.25);
-        motorRF.setPower(-.25);
-        motorLF.setPower(.25);
-        motorLB.setPower(.25);
+        motorRB.setPower(-turnSpeed);
+        motorRF.setPower(-turnSpeed);
+        motorLF.setPower(turnSpeed);
+        motorLB.setPower(turnSpeed);
         try {
             Thread.sleep(time);
         }
@@ -290,10 +299,10 @@ public class Kraken_8769_Autonomous_Base extends LinearOpMode {
     public void TurnLeft(float degrees)
     {
         long time = (long) (degrees * msPerDegree);
-        motorRB.setPower(.25);
-        motorRF.setPower(.25);
-        motorLF.setPower(-.25);
-        motorLB.setPower(-.25);
+        motorRB.setPower(turnSpeed);
+        motorRF.setPower(turnSpeed);
+        motorLF.setPower(-turnSpeed);
+        motorLB.setPower(-turnSpeed);
         try {
             Thread.sleep(time);
         }
