@@ -42,21 +42,25 @@ public class Blue_Right_First extends Kraken_8769_Autonomous_Base {
 
     }
     public void runOpMode() throws InterruptedException {
+        speed = .15;
         super.runOpMode();
-        super.DriveForward(24);
+        super.DriveForward(18);
         super.TurnRight(45);
-        super.DriveForward(68);
+        super.DriveForward(80);
         super.TurnRight(45);
-
-        //super.extend arm(1);
-        //super.touchOffWall();
-        //super.lower bucket(1)
-
-        super.DriveBackwards(24);
-        super.TurnRight(45);
-        super.DriveForward(24);
+        // super.TouchOffWall();
+        /*
+        super.extend arm(1);
+        super.lower bucket(1)
+         */
+        super.DriveForward(40);
+        /**
+         //super.TurnRight(45);
+         //super.DriveForward(11.5);
+         Un-needed code^
+         */
         super.stopMotors();
-//        servoBucket.setPosition(-1);
+        // servoBucket.setPosition(1);
 
     }
 }

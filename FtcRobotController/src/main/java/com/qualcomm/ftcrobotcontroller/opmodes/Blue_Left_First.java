@@ -37,7 +37,8 @@ package com.qualcomm.ftcrobotcontroller.opmodes;
  * Enables control of the robot via the gamepad
  */
 public class Blue_Left_First extends Kraken_8769_Autonomous_Base {
-
+    /**MAKE IT FARTHER DISTANCE!!!
+     */
     public Blue_Left_First() {
 
     }
