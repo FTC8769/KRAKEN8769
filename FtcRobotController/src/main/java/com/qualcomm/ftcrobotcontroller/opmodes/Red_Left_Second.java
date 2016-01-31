@@ -55,10 +55,10 @@ public class Red_Left_Second extends Kraken_8769_Autonomous_Base {
         super.lower bucket(1)
          */
         super.DriveForward(40);
-        /**
-        //super.TurnRight(45);
-        //super.DriveForward(11.5);
-         Un-needed code^
+         /*
+        super.DriveBackward(28)
+        super.TurnLeft(45);
+        super.DriveForward(20);
         */
         super.stopMotors();
        // servoBucket.setPosition(1);

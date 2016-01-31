@@ -53,9 +53,10 @@ public class Blue_Right_Second extends Kraken_8769_Autonomous_Base {
         super.extend arm(1);
         super.lower bucket(1)
          */
-        super.DriveBackwards(24);
+        /*super.DriveBackwards(24);
         super.TurnRight(45);
         super.DriveForward(24);
+        */
         super.stopMotors();
         servoBucket.setPosition(-1);
 

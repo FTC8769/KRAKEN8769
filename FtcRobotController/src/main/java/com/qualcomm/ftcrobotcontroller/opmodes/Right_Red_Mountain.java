@@ -31,37 +31,17 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. */
 
 package com.qualcomm.ftcrobotcontroller.opmodes;
 
-/**
- * TeleOp Mode
- * <p>
- * Enables control of the robot via the gamepad
- */
-public class Blue_Left_First extends Kraken_8769_Autonomous_Base {
-    /**MAKE IT FARTHER DISTANCE!!!
-     */
-    public Blue_Left_First() {
+public class Right_Red_Mountain extends Kraken_8769_Autonomous_Base {
+    public Right_Red_Mountain() {
 
     }
+
     public void runOpMode() throws InterruptedException {
-        speed = .15;
-        super.runOpMode();
-        super.DriveForward(18);
-        super.TurnRight(45);
-        super.DriveForward(80);
-        super.TurnRight(45);
-       // super.TouchOffWall();
-        /*
-        super.extend arm(1);
-        super.lower bucket(1)
-         */
-        super.DriveForward(40);
-         /*
-        super.DriveBackward(28)
-        super.TurnRight(45);
-        super.DriveForward(20);
-        */
-        super.stopMotors();
-       // servoBucket.setPosition(1);
-    }
+        super.runOpMode ();
+        super.DriveForward(72);//drive forward 50
+        super.TurnLeft(110);//Turn left 90 degrees
+        super.DriveForward(1);//drive forward 60
+        servoBucket.setPosition(-1);
 
+    }
 }
