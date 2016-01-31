@@ -62,12 +62,17 @@ public class FtcOpModeRegister implements OpModeRegister {
     //manager.register ("PushBotAuto", PushBotAuto.class);
     //manager.register ("PushBotManual", PushBotManual.class);
     manager.register ("Human Control", Kraken_8769.class);
+
     manager.register ("Blue Left 1st", Blue_Left_First.class);
     manager.register ("Blue Left 2nd", Blue_Left_Second.class);
     manager.register ("Blue Right 1st", Blue_Right_First.class);
     manager.register ("Blue Right 2nd", Blue_Right_Second.class);
-    manager.register ("Touch Test", TouchTest.class);
-    manager.register ("Bucket Test", BucketTest.class);
+
+    manager.register ("Red Left 1st", Red_Left_First.class);
+    manager.register ("Red Left 2nd", Red_Left_Second.class);
+    manager.register ("Red Right 1st", Red_Right_First.class);
+    manager.register ("Red Right 2nd", Red_Right_Second.class);
+
     /*
      * Uncomment any of the following lines if you want to register an op mode.
      */
