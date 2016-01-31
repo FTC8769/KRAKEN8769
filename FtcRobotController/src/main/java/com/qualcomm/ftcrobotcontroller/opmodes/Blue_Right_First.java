@@ -53,7 +53,7 @@ public class Blue_Right_First extends Kraken_8769_Autonomous_Base {
         super.extend arm(1);
         super.lower bucket(1)
          */
-        super.DriveForward(40);
+        super.DriveForward(35);
         /**
          //super.TurnRight(45);
          //super.DriveForward(11.5);
