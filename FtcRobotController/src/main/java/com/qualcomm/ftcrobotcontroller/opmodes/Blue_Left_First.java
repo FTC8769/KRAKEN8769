@@ -37,31 +37,29 @@ package com.qualcomm.ftcrobotcontroller.opmodes;
  * Enables control of the robot via the gamepad
  */
 public class Blue_Left_First extends Kraken_8769_Autonomous_Base {
-    /**MAKE IT FARTHER DISTANCE!!!
-     */
+
     public Blue_Left_First() {
 
     }
     public void runOpMode() throws InterruptedException {
-        speed = .15;
         super.runOpMode();
-        super.DriveForward(18);
-        super.TurnRight(45);
-        super.DriveForward(80);
-        super.TurnRight(45);
+        super.DriveForward(9);
+        super.TurnLeft(45);
+        super.DriveForward(79);
+        super.TurnLeft(45);
        // super.TouchOffWall();
         /*
         super.extend arm(1);
         super.lower bucket(1)
          */
-        super.DriveForward(40);
+        super.DriveForward(11.5);
         /**
         //super.TurnRight(45);
         //super.DriveForward(11.5);
          Un-needed code^
         */
         super.stopMotors();
-       // servoBucket.setPosition(1);
+        servoBucket.setPosition(1);
     }
 
 }
