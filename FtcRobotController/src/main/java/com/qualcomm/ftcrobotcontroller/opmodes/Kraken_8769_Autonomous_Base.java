@@ -188,13 +188,14 @@ public class Kraken_8769_Autonomous_Base extends LinearOpMode {
 
     public void ArmSet()
     {
-        motorArm.setPower(1);
+        motorArm.setPower(-.5);
         try {
-            Thread.sleep(500);
+            Thread.sleep(12500);
         }
         catch (InterruptedException e) {
             e.printStackTrace();
         }
+        motorArm.setPower(0);
     }
 
     public void DriveForward(int inches)

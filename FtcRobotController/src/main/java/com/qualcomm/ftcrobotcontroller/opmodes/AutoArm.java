@@ -45,8 +45,8 @@ public class AutoArm extends Kraken_8769_Autonomous_Base {
     public void runOpMode() throws InterruptedException {
         speed = .15;
         super.runOpMode();
-
-       servoBucket.setPosition(1);
+        super.ArmSet();
+       servoBucket.setPosition(0);
     }
 
 }

@@ -74,7 +74,7 @@ public class FtcOpModeRegister implements OpModeRegister {
     manager.register ("Red Right 2nd", Red_Right_Second.class);
 
     manager.register ("Red Mountain", Right_Red_Mountain.class);
-
+      manager.register ("AutoArm", AutoArm.class);
     /*
      * Uncomment any of the following lines if you want to register an op mode.
      */

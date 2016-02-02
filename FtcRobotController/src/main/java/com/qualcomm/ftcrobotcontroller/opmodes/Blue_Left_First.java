@@ -54,6 +54,7 @@ public class Blue_Left_First extends Kraken_8769_Autonomous_Base {
         super.extend arm(1);
         super.lower bucket(1)
          */
+        super.ArmSet();
         super.DriveForward(40);
          /*
         super.DriveBackward(28)
